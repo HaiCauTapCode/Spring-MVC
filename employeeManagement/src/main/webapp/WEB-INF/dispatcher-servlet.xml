@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- Quét và đăng ký các thành phần trong gói com.example làm các bean Spring.-->
+    <context:component-scan base-package="com.example"/>
+    <!-- Kích hoạt hỗ trợ cho các annotation quan trọng trong Spring MVC, giúp quản lý URL và xử lý yêu cầu HTTP.-->
+    <mvc:annotation-driven/>
+
+    <!-- Xác định InternalResourceViewResolver để tìm và sử dụng các tệp JSP views trong thư mục "/WEB-INF/views/".-->
+    <bean id="viewResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".html" />
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="engine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolver" ref="viewResolver" />
+        <property name="additionalDialects">
+            <set>
+                <bean class="org.thymeleaf.extras.java8time.dialect.Java8TimeDialect" />
+            </set>
+        </property>
+    </bean>
+
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="engine" />
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+</beans>
